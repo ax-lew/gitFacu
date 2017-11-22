@@ -1,6 +1,5 @@
 % ejercicios practica
 
-
 %concatenar(?L1, ?L2, ?L3)
 concatenar([], L2, L3) :- L2 = L3.
 concatenar([E|L1], L2, [E3|L3]) :- E = E3, concatenar(L1, L2, L3).
@@ -116,19 +115,12 @@ inorder(nil, []).
 inorder(bin(Izq,V,Der), L) :- inorder(Izq, Rec1), inorder(Der, Rec2), concatenar(Rec1, [V], Un), concatenar(Un, Rec2, L). 
 
 
-
-
-
 %arbolConInorder(+Lista,-AB)
 arbolConInorder([],nil).
 arbolConInorder(Lista,AB) :- length(Lista,Size), between(1,Size,X), split(X, Lista, Izq, Der), last(Izq, Raiz), concatenar(RecIzq, [Raiz], Izq), arbolConInorder(RecIzq, ABIzq), arbolConInorder(Der, ABDer), AB = bin(ABIzq, Raiz, ABDer).
 
-
-
 %coprimos(-X,-Y)
 coprimos(X,Y) :- desde(1,A), between(1,A,B), 1 is gcd(A,B), X = A, Y = B.
-
-
 
 %fliplength(?Longitud, ?Lista)
 fliplength(N, L) :- length(L, N).
@@ -145,22 +137,16 @@ sumaLista(R,Size,L) :- Size>1, between(0,R,X), Pred is Size-1, sumaLista(X,Pred,
 %cuadradoSemiLatino(+N, -XS)
 cuadradoSemiLatino(N, XS) :- desde2(0,X), matriz(XS,N,N), maplist(sumaLista(X,N), XS).
 
-
 %sacarUnoExacto(+L,+X,?R)
 sacarUnoExacto([E|L], E, R) :- R = L.
 sacarUnoExacto([E|L], E, R) :- pertenece(E,L), sacarUnoExacto(L,E,Rec), concatenar([E], Rec, R).
 sacarUnoExacto([A|L], B, R) :- A \= B, sacarUnoExacto(L,B,Rec), concatenar([A], Rec, R).
 
-
-
 cadena([],_,0).
 cadena([E|S],A,N) :- N \= 0, member(E, A), Pred is N-1, cadena(S,A,Pred).
 
-
 separar([E|[E2|S]],S1,A,B,S2) :- E = A, E2 = B, S = S2, S1 = [].
 separar([E|S],S1,A,B,S2) :- separar(S, NewS1, A, B, S2), concatenar([E], NewS1, S1).
-
-
 
 listaConOtroOrden([], []). 
 listaConOtroOrden([E|L1], L2) :- member(E, L2), sacarUnoExacto(L2,E,SinUno), listaConOtroOrden(L1, SinUno).
@@ -169,23 +155,10 @@ diferenciaConjuntos([], _, []).
 diferenciaConjuntos([E|L], L2, Res) :- member(E,L2), diferenciaConjuntos(L,L2,Res).
 diferenciaConjuntos([E|L], L2, Res) :- not(member(E,L2)), diferenciaConjuntos(L,L2,Rec), concatenar([E], Rec, Res).
 
-
-
 receta(pizzaMozzarellaCasera, 30, [harina, levadura, sal, aceite, tomate, mozzarella]).
 receta(otraPizzaMozzarellaCasera, 30, [levadura, sal, aceite, harina, tomate, mozzarella]).
-receta(pizzaFugazzaCasera, 25, [harina, levadura, sal, aceite, cebolla]).
-receta(pizzaMozzarellaRapida, 27, [prepizza, tomate, mozzarella]).
 ingrediente(harina).
 ingrediente(levadura).
-ingrediente(mozzarella).
-ingrediente(tomate).
-ingrediente(huevo).
-ingrediente(aceite).
-ingrediente(sal).
-ingrediente(prepizza).
-ingrediente(azucar).
-ingrediente(cebolla).
-ingrediente(zanahoria).
 
 sonSimilares(P1, P2) :- receta(P1, Tiempo1, Ingredientes1), receta(P2, Tiempo1, Ingredientes2), listaConOtroOrden(Ingredientes1, Ingredientes2).
 
@@ -195,7 +168,6 @@ tengo([]).
 tengo([E|L]) :- ingrediente(E), tengo(L).
 
 puedoPreparar(Plato) :- receta(Plato, _, Ingredientes), tengo(Ingredientes).
-
 
 masRapido(P) :- receta(P, Tiempo1, _), puedoPreparar(P), not((receta(P2, Tiempo2, _), puedoPreparar(P2), Tiempo2<Tiempo1)).
 
