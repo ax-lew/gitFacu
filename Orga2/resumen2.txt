@@ -1,0 +1,177 @@
+Hyper-Threading Technology Architecture and 
+Microarchitecture
+
+ABSTRACT
+
+Intel’s Hyper-Threading Technology brings the concept 
+of simultaneous multi-threading to the Intel 
+Architecture. Hyper-Threading Technology makes a 
+single physical processor appear as two logical 
+processors; the physical execution resources are shared 
+and the architecture state is duplicated for the two 
+logical processors. From a software or architecture 
+perspective, this means operating systems and user 
+programs can schedule processes or threads to logical 
+processors as they would on multiple physical 
+processors
+From a microarchitecture perspective, this 
+means that instructions from both logical processors 
+will persist and execute simultaneously on shared 
+execution resources.
+
+
+INTRODUCTION
+
+systems demanding increasingly higher levels of processor 
+performance. 
+traditional approaches to processor 
+design. Microarchitecture techniques used to achieve 
+past processor performance improvement–super- 
+pipelining, branch prediction, super-scalar execution, 
+out-of-order 
+execution, 
+caches–have 
+made 
+microprocessors increasingly more complex, have more 
+transistors, and consume more power.
+
+
+Processor architects are 
+therefore looking for ways to improve performance at a 
+greater rate than transistor counts and power 
+dissipation. Intel’s Hyper-Threading Technology is one 
+solution.
+
+
+The vast majority of techniques to improve processor 
+performance from one generation to the next is complex 
+and often adds significant die-size and power costs. 
+These techniques increase performance but not with 
+100% efficiency
+
+
+Thread-Level Parallelism
+
+
+A look at today’s software trends reveals that server 
+applications consist of multiple threads or processes that 
+can be executed in parallel.
+
+By adding more 
+processors, applications potentially get substantial 
+performance improvement by executing multiple 
+threads on multiple processors at the same time
+
+One of these techniques is chip 
+multiprocessing (CMP), where two processors are put 
+on a single die
+The two processors each have a full set 
+of execution and architectural resources. 
+The 
+processors may or may not share a large on-chip cache.
+a CMP chip is significantly larger 
+than the size of a single-core chip and therefore more 
+expensive to manufacture;
+
+Another approach is to allow a single processor to 
+execute multiple threads by switching between them.
+Time-slice multithreading is where the processor 
+switches between software threads after a fixed time 
+period. Time-slice multithreading can result in wasted 
+execution slots but can effectively minimize the effects 
+of long latencies to memory.
+Switch-on-event multi- 
+threading would switch threads on long latency events 
+such as cache misses. This approach can work well for 
+server applications that have large numbers of cache 
+misses and where the two threads are executing similar 
+tasks.
+Both do not achieve optimal 
+overlap of many sources of inefficient resource usage, 
+such 
+as 
+branch 
+mispredictions, 
+instruction 
+dependencies, etc.
+
+
+Finally, there is simultaneous multi-threading, where 
+multiple threads can execute on a single processor 
+without switching. The threads execute simultaneously 
+and make much better use of the resources. This 
+approach makes the most effective use of processor 
+resources: it maximizes the performance vs. transistor 
+count and power consumption.
+
+
+Hyper-Threading Technology brings the simultaneous 
+multi-threading approach to the Intel architecture
+
+
+
+
+HYPER-THREADING TECHNOLOGY 
+ARCHITECTURE
+
+
+Hyper-Threading Technology makes a single physical 
+processor appear as multiple logical processors
+To do this, there is one copy of the architecture state for 
+each logical processor, and the logical processors share 
+a single set of physical execution resources.
+
+
+IMAGEN
+
+
+Each logical processor maintains a complete set of the 
+architecture state. The architecture state consists of 
+registers including the general-purpose registers, the 
+control registers, the advanced programmable interrupt 
+controller (APIC) registers, and some machine state 
+registers.
+
+The number of transistors to store 
+the architecture state is an extremely small fraction of 
+the total. Logical processors share nearly all other 
+resources on the physical processor, such as caches, execution units, branch predictors, control logic, and 
+buses.
+
+Each logical processor has its own interrupt controller 
+or APIC. Interrupts sent to a specific logical processor 
+are handled only by that logical processor.
+
+
+Several goals.
+One 
+goal was to minimize the die area cost of implementing 
+Hyper-Threading Technology. the logical 
+processors share the vast majority of microarchitecture 
+resources and only a few small structures were 
+replicated, the die area cost of the first implementation 
+was less than 5% of the total die area.
+
+
+A second goal was to ensure that when one logical 
+processor is stalled the other logical processor could 
+continue to make forward progress. A logical processor 
+may be temporarily stalled for a variety of reasons, 
+including servicing cache misses, handling branch 
+mispredictions, or waiting for the results of previous 
+instructions. Independent forward progress was ensured 
+by managing buffering queues such that no logical 
+processor can use all the entries when two active 
+software threads 2 were executing. This is accomplished 
+by either partitioning or limiting the number of active 
+entries each thread can have.
+
+A third goal was to allow a processor running only one 
+active software thread to run at the same speed on a 
+processor with Hyper-Threading Technology as on a 
+processor without this capability. This means that 
+partitioned resources should be recombined when only 
+one software thread is active
+
+
+IMAGEN
